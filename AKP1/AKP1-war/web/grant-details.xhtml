@@ -1,0 +1,67 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="landing_name">
+            <f:metadata>
+                <f:viewParam name="semcode" value="#{grantBean.sem_code}" />
+            </f:metadata>
+            Информация о стипендии <b>#{grantBean.sem_code}</b>
+        </ui:define>
+        <ui:define name="content">
+            <div class='panel'>
+                <div class='inline in_main'>
+                    <h:form>
+                        <h:commandButton value="Рассчитать" action="#{grantBean.GrantCalculate()}"/> - Успешная транзакция<br/>
+                        <h:commandButton value="Рассчитать" action="#{grantBean.experiment2()}"/> - Ошибка ejb2<br/>
+                        <h:commandButton value="Рассчитать" action="#{grantBean.experiment3()}"/> - Откат<br/>
+                        <h:commandButton value="Рассчитать" action="#{grantBean.experiment4()}"/> - Откат без транзакции<br/>
+                        <h:commandButton value="Рассчитать" action="#{grantBean.experiment5()}"/> - Откат REQUIRES_NEW
+                    </h:form>
+                    
+
+
+
+                    <br/><br/>
+
+                    <table cellspacing='0'>
+                        <tr>
+                            <td>Код семестра</td>
+                            <td>ID студента</td>
+                            <td>ФИО</td>
+                            <td>Статус стипендии</td>
+                        </tr>
+                        <ui:repeat var="gd" value="#{grantBean.grantDetails}">
+                            <tr>
+                                <td>#{gd.grant.grantSemestr}</td>
+                                <td>#{gd.idUser}</td>
+                                <td>#{userBean.getUserFIOByID(gd.idUser)}</td>
+                                <td>
+                                    <ui:fragment rendered="#{gd.grantStatus=='ok'}">
+                                        <b style="color:#00cc33">Одобрено</b>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{gd.grantStatus=='no'}">
+                                        <b style="color:#cc0033">Нет</b>
+                                    </ui:fragment>
+                                </td>
+                            </tr>       
+                        </ui:repeat>
+                    </table>
+
+
+                </div>
+                <div class='inline in_nav'>
+                    <div class='rightbox'>
+                        <a href='./grants.xhtml'>Список всех стипендий</a>
+                        <a href='./grant-add.xhtml' class="add">Добавить новую стипендию</a>
+                    </div>
+                </div></div>
+
+
+
+        </ui:define>
+    </ui:composition>
+</html>
