@@ -4,6 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Никита/Documents/NetBeansProjects/jlab1/AKP1/AKP1-ejb/src/java/DAO/GrantDAOImpl.java</file>
+            <file>file:/C:/Users/Никита/Documents/NetBeansProjects/jlab1/AKP1/AKP1-ejb/src/java/DAO/AbstractFacade.java</file>
+            <file>file:/C:/Users/Никита/Documents/NetBeansProjects/jlab1/AKP1/AKP1-ejb/src/java/DAO/A_GrantFacade.java</file>
         </group>
     </open-files>
 </project-private>

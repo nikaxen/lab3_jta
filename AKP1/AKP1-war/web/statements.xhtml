@@ -9,6 +9,7 @@
             <c:if test="#{accountBean.rolename=='prep'}"> Список несданных ведомостей</c:if>
         </ui:define>
         <ui:define name="content">
+            <a href="./statement-details.xhtml?sid=-1">logout</a>
             <div class='panel'>
                 <div class='inline in_main'>
                     <c:if test="#{accountBean.rolename=='dek'}">

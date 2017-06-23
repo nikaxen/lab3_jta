@@ -50,9 +50,16 @@ public class StatementBean implements Serializable{
     }
    
     public Entities.Statement getStatementById() {
+        if(sid==-1){
+            AccountBean ab = new AccountBean();
+            ab.logout();
+            Entities.Statement fst = new Entities.Statement();
+        
+        return fst;
+        }else{
         Entities.Statement fst = new Entities.Statement();
         fst = sDAO.getStatementById(sid);
-        return fst;
+        return fst;}
     }
     public String AddStatement() {
         sDAO.AddNewStatement(id_subject, id_user, title, grid, semestr);

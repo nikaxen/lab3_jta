@@ -28,6 +28,9 @@ public class GrantBean implements Serializable{
     @EJB 
     private dao.GDAO gDAO2;
     
+    @EJB
+    private DAO.A_GrantFacade facade;
+    
     public String AddGrant() {
         gDAO2.AddNewGrant(grant_semestr,grant_title);
         return "grants.xhtml";
@@ -41,26 +44,26 @@ public class GrantBean implements Serializable{
     }
    
     public String GrantCalculate(){
-        gDAO.GrantCalculate(sem_code);
+        facade.GrantCalculate(sem_code);
         return "";
     }
     
     // lab3
     
     public String experiment2(){
-        gDAO.Experiment2(sem_code);
+        facade.Experiment2(sem_code);
         return "";
     }
     public String experiment3(){
-        gDAO.Experiment3(sem_code);
+        facade.Experiment3(sem_code);
         return "";
     }
     public String experiment4(){
-        gDAO.Experiment4(sem_code);
+        facade.Experiment4(sem_code);
         return "";
     }
     public String experiment5(){
-        gDAO.Experiment5(sem_code);
+        facade.Experiment5(sem_code);
         return "";
     }
     // end of lab3

@@ -1,9 +1,9 @@
+
 package DAO;
 
 import Ent.Grant;
 import Entities.Mark;
 import Entities.User;
-import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -16,39 +16,31 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class GrantDAOImpl implements GrantDAO, Serializable {
+public class A_GrantFacade extends AbstractFacade<Grant>{
 
     @PersistenceContext(unitName = "AKP1-ejbPU")
     private EntityManager em;
-
-    @EJB
-    private dao.GDAO gDAO2;
     
     @Resource
     SessionContext sc;
-
     
-    @Override
-    public List<User> getUserList(String semcode) {
-        Query query = em.createQuery("SELECT u FROM User u JOIN u.markList ml JOIN ml.statement st WHERE st.semestr=?1 GROUP BY u.idUser", User.class);
-        query.setParameter(1, semcode);
-        return (List<User>)query.getResultList();
+    @EJB DAO.GrantDAO gDAO;
+    
+    @EJB dao.GDAO gDAO2;
+    
+    public A_GrantFacade() {
+        super(Grant.class);
     }
 
     
-    
-    
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    @Override
-    public void GrantCalculate(String semcode) { // GRANT CALCULATE method
+    public void GrantCalculate(String semcode) { 
 
         gDAO2.CleanGrants(semcode);
 
         Grant grant = gDAO2.getGrantBySemestr(semcode);
-
-       // Query query = em.createQuery("SELECT u FROM User u JOIN u.markList ml JOIN ml.statement st WHERE st.semestr=?1 GROUP BY u.idUser", User.class);
-       // query.setParameter(1, semcode);
-        List<User> uList = getUserList(semcode);
+        
+        List<User> uList = gDAO.getUserList(semcode);
         boolean grant_status = true;
         for (User u : uList) {
             List<Mark> markList = u.getMarkList();
@@ -65,23 +57,15 @@ public class GrantDAOImpl implements GrantDAO, Serializable {
             grant_status = true;
         }
     }
-
-    @Override
-    public List<Grant> getAllGrants() {
-        return gDAO2.getAllGrants();
-    }
-
-    // Lab3 Experiments
+    
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    @Override
-    public void Experiment2(String semcode) {
+    public void Experiment2(String semcode) { 
         gDAO2.CleanGrants(semcode);
 
         Grant grant = gDAO2.getGrantBySemestr(semcode);
 
-        Query query = em.createQuery("SELECT u FROM User u JOIN u.markList ml JOIN ml.statement st WHERE st.semestr=?1 GROUP BY u.idUser", User.class);
-        query.setParameter(1, semcode);
-        List<User> uList = query.getResultList();
+        
+        List<User> uList = gDAO.getUserList(semcode);
         boolean grant_status = true;
         for (User u : uList) {
             List<Mark> markList = u.getMarkList();
@@ -98,17 +82,15 @@ public class GrantDAOImpl implements GrantDAO, Serializable {
             grant_status = true;
         }
     }
-
+    
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    @Override
-    public void Experiment3(String semcode) {
+    public void Experiment3(String semcode) { 
         gDAO2.CleanGrants(semcode);
 
         Grant grant = gDAO2.getGrantBySemestr(semcode);
 
-        Query query = em.createQuery("SELECT u FROM User u JOIN u.markList ml JOIN ml.statement st WHERE st.semestr=?1 GROUP BY u.idUser", User.class);
-        query.setParameter(1, semcode);
-        List<User> uList = query.getResultList();
+        
+        List<User> uList = gDAO.getUserList(semcode);
         boolean grant_status = true;
         for (User u : uList) {
             List<Mark> markList = u.getMarkList();
@@ -127,18 +109,16 @@ public class GrantDAOImpl implements GrantDAO, Serializable {
         }
         sc.setRollbackOnly(); // ROLLBACK
     }
-
+    
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    @Override
-    public void Experiment4(String semcode) {
+    public void Experiment4(String semcode) { 
         try {
             gDAO2.CleanGrants(semcode);
 
             Grant grant = gDAO2.getGrantBySemestr(semcode);
 
-            Query query = em.createQuery("SELECT u FROM User u JOIN u.markList ml JOIN ml.statement st WHERE st.semestr=?1 GROUP BY u.idUser", User.class);
-            query.setParameter(1, semcode);
-            List<User> uList = query.getResultList();
+            
+            List<User> uList = gDAO.getUserList(semcode);
             boolean grant_status = true;
             for (User u : uList) {
                 List<Mark> markList = u.getMarkList();
@@ -158,20 +138,16 @@ public class GrantDAOImpl implements GrantDAO, Serializable {
         } catch (Exception ex) {
             System.out.println("Exception = " + ex);
         }
-        
     }
-
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    @Override
-    public void Experiment5(String semcode) {
-        try {
+    public void Experiment5(String semcode) { 
+    try {
             gDAO2.CleanGrants(semcode);
 
             Grant grant = gDAO2.getGrantBySemestr(semcode);
 
-            Query query = em.createQuery("SELECT u FROM User u JOIN u.markList ml JOIN ml.statement st WHERE st.semestr=?1 GROUP BY u.idUser", User.class);
-            query.setParameter(1, semcode);
-            List<User> uList = query.getResultList();
+            
+            List<User> uList = gDAO.getUserList(semcode);
             boolean grant_status = true;
             for (User u : uList) {
                 List<Mark> markList = u.getMarkList();
@@ -192,5 +168,11 @@ public class GrantDAOImpl implements GrantDAO, Serializable {
         }
         sc.setRollbackOnly(); // ROLLBACK
     }
-
+    
+    
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+    
 }
