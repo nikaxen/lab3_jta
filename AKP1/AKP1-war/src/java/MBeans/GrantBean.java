@@ -43,26 +43,28 @@ public class GrantBean implements Serializable{
         return gDAO2.getGrantDetails(sem_code);
     }
    
-    public String GrantCalculate(){
+    public String GrantCalculate(){ // Успешное выполнение транзакции
         facade.GrantCalculate(sem_code);
         return "";
     }
     
     // lab3
     
-    public String experiment2(){
+    
+    
+    public String experiment2(){ // Закончить транзакцию откатом для 2 бд (обновления откатываются)
         facade.Experiment2(sem_code);
         return "";
     }
-    public String experiment3(){
+    public String experiment3(){ // Закончить транзакцию откатом, выбросить exception для второй бд (обновления откатываются)
         facade.Experiment3(sem_code);
         return "";
     }
-    public String experiment4(){
+    public String experiment4(){ // Закончить транзакцию откатом для 1 бд, обновления второй бд выполняется вне контекста транзакции.
         facade.Experiment4(sem_code);
         return "";
     }
-    public String experiment5(){
+    public String experiment5(){ // Закончить транзакцию откатом для 2 бд, но обновление 1 бд в контексте новой транзакции.
         facade.Experiment5(sem_code);
         return "";
     }

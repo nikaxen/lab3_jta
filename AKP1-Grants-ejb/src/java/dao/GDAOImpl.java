@@ -5,7 +5,9 @@ import Ent.Grant;
 import Ent.GrantUser;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.EJBException;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -17,6 +19,9 @@ import javax.persistence.Query;
 public class GDAOImpl implements GDAO, Serializable{
     @PersistenceContext(unitName = "AKP1-Grants-ejbPU")
     private EntityManager em2;
+    
+    @Resource
+    private SessionContext sc;
     
     @Override
     public List<GrantUser> getGrantDetails(String semcode) {
@@ -38,65 +43,88 @@ public class GDAOImpl implements GDAO, Serializable{
         return (List<Grant>) query.getResultList();
     }
     
-    @TransactionAttribute(TransactionAttributeType.MANDATORY)
+    //@TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
     public void SetGrant(int id_user, int id_grant, boolean grant_status){
         Grant g = em2.find(Grant.class, id_grant);
         GrantUser gu = new GrantUser();
-        
         gu.setIdUser(id_user);
         gu.setGrant(g);
         if (grant_status) {
-        System.out.println("ПОЛУЧАЕТ - " + id_user);
         gu.setGrantStatus("ok");
         } else {
-        System.out.println("НЕ ПОЛУЧАЕТ - " + id_user);
         gu.setGrantStatus("no");
         }
-        em2.merge(gu);
+        em2.persist(gu);
     }
 
     
     // lab3
     
     
-    @TransactionAttribute(TransactionAttributeType.MANDATORY)
+    //@TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
     public void SetGrantExperiment2(int id_user, int id_grant, boolean grant_status){
         Grant g = em2.find(Grant.class, id_grant);
         GrantUser gu = new GrantUser();
-        
         gu.setIdUser(id_user);
         gu.setGrant(g);
         if (grant_status) {
-        System.out.println("ПОЛУЧАЕТ - " + id_user);
         gu.setGrantStatus("ok");
         } else {
-        System.out.println("НЕ ПОЛУЧАЕТ - " + id_user);
         gu.setGrantStatus("no");
         }
-        em2.merge(gu);
-        throw new EJBException("SetGrantExperiment2 Exception in AKP1-Grants-ejb!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        em2.persist(gu);
+        sc.setRollbackOnly();
     }
     
+   // @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Override
+    public void SetGrantExperiment3(int id_user, int id_grant, boolean grant_status){
+        Grant g = em2.find(Grant.class, id_grant);
+        GrantUser gu = new GrantUser();
+        gu.setIdUser(id_user);
+        gu.setGrant(g);
+        if (grant_status) {
+        gu.setGrantStatus("ok");
+        } else {
+        gu.setGrantStatus("no");
+        }
+        em2.persist(gu);
+        throw new EJBException("EJB EXCEPTION IN SECOND 2DB");
+    }
     
-    
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    //@TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
     public void SetGrantExperiment4(int id_user, int id_grant, boolean grant_status){
         Grant g = em2.find(Grant.class, id_grant);
         GrantUser gu = new GrantUser();
-        
         gu.setIdUser(id_user);
         gu.setGrant(g);
         if (grant_status) {
-        System.out.println("ПОЛУЧАЕТ - " + id_user);
         gu.setGrantStatus("ok");
         } else {
-        System.out.println("НЕ ПОЛУЧАЕТ - " + id_user);
         gu.setGrantStatus("no");
         }
-        em2.merge(gu);
+        em2.persist(gu);
+        sc.setRollbackOnly();
+    }
+    
+    
+    //@TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Override
+    public void SetGrantExperiment5(int id_user, int id_grant, boolean grant_status){
+        Grant g = em2.find(Grant.class, id_grant);
+        GrantUser gu = new GrantUser();
+        gu.setIdUser(id_user);
+        gu.setGrant(g);
+        if (grant_status) {
+        gu.setGrantStatus("ok");
+        } else {
+        gu.setGrantStatus("no");
+        }
+        em2.persist(gu);
+        throw new EJBException("EJB EXCEPTION IN SECOND DB");
     }
     
     
@@ -109,11 +137,16 @@ public class GDAOImpl implements GDAO, Serializable{
         g.setGrantTitle(grant_title);
         em2.persist(g);
     }
-
+    
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
     public void CleanGrants(String semcode) {
         Query query = em2.createQuery("DELETE FROM GrantUser gu WHERE gu.grant.grantSemestr=?1", GrantUser.class);
         query.setParameter(1, semcode);
         query.executeUpdate();
+    }
+    @Override
+    public void flush() {
+        em2.flush();
     }
 }

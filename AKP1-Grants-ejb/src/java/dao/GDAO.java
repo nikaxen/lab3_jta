@@ -14,7 +14,9 @@ public interface GDAO {
     public Grant getGrantBySemestr(String semcode);
     public void SetGrant(int id_user, int id_grant, boolean status);
     public void CleanGrants(String semcode);
-    
+    public void flush();
     public void SetGrantExperiment2(int id_user, int id_grant, boolean status);
+    public void SetGrantExperiment3(int id_user, int id_grant, boolean status);
     public void SetGrantExperiment4(int id_user, int id_grant, boolean status);
+    public void SetGrantExperiment5(int id_user, int id_grant, boolean status);
 }

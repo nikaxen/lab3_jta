@@ -8,12 +8,14 @@ import javax.ejb.Local;
 
 @Local
 public interface GrantDAO {
-    public void GrantCalculate(String semcode);
-    public List<User> getUserList(String semcode);
+    //public void GrantCalculate(String semcode);
+    public User getStudent();
     public List<Grant> getAllGrants();
-    // lab3
-    public void Experiment2(String semcode);
-    public void Experiment3(String semcode);
-    public void Experiment4(String semcode);
-    public void Experiment5(String semcode);  // end of lab3
+    public void addCustomUser();
+    public void addCustomUser2();
+    public void addCustomUser3();
+    public void addCustomUser4();
+    public void addCustomUser5();
+    public void flush();
+   
 }
